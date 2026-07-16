@@ -45,4 +45,25 @@ document.addEventListener('DOMContentLoaded', function () {
       box.closest('.check-item').classList.toggle('done');
     });
   });
+
+  // Team Documents — wire up shared folder link from assets/document-links.js
+  var sectionKey = document.body.getAttribute('data-section');
+  var link = document.getElementById('team-docs-link');
+  var hint = document.getElementById('team-docs-hint');
+  if (sectionKey && link && window.SECTION_DOCS) {
+    var url = window.SECTION_DOCS[sectionKey];
+    var isConfigured = url && url.indexOf('REPLACE_ME') === -1;
+    if (isConfigured) {
+      link.href = url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.classList.remove('disabled');
+      link.textContent = 'Open Shared Folder ↗';
+      if (hint) hint.textContent = 'Upload finished documents or download what the team has already shared.';
+    } else {
+      link.classList.add('disabled');
+      link.removeAttribute('href');
+      if (hint) hint.textContent = 'Not connected yet — add this section\'s Drive/Dropbox folder link in assets/document-links.js';
+    }
+  }
 });
